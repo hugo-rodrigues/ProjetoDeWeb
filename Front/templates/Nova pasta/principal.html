@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>
+        Segurança
+    </title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <!-- CSS Files -->
+    <link href="../assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
+     <link rel="stylesheet" type="text/css" href="https://rawgit.com/gionkunz/chartist-js/master/dist/chartist.min.css">
+     <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>
+ <link rel="stylesheet" href="{{ url_for('static', filename='css/material-dashboard.css') }}">
+</head>
+<style>
+            #chart {
+                height: 300px;
+                width: 100%;
+            }
+</style>
+<body class="">
+
+
+
+
+
+
+
+    <div class="wrapper  ">
+
+        <div class="main-panel " style="margin-right:10%;">
+            <!-- Navbar -->
+
+            <!-- End Navbar -->
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect">Bairro</label>
+                            </div >
+                            <div class="form-group">
+
+                            <select name ="bairro" class="custom-select" id="inputGroupSelect">
+                              <option selected >Escolha...</option>
+
+                              <option value="belmonte">Belmonte</option>
+                              <option value="beijaflor">Beija Flor</option>
+                              <option value="cachoeirinha">Cachoeirinha</option>
+                              <option value="concordia">Concordia</option>
+                              <option value="cidadenova">Cidade Nova</option>	
+                               <option value="saopaulo">São Paulo</option>
+                              <option value="saograbriel">São Gabriel</option>
+                              <option value="santacruz">Santa Cruz</option>
+                              <option value="ribeirodeabreu">Ribeiro de Abreu</option>	
+                              <option value="renascenca">Renascença</option>
+                              <option value="palmares">Palmares</option>	
+
+                            </select>
+                              </div>
+                            <div class="input-group-prepend">
+                                <label class="input-group-text" for="inputGroupSelect1">Turno</label>
+                            </div>
+                             <div class="form-group">
+                            <select name ="turno" class="custom-select" id="inputGroupSelect1">
+                              <option selected>Escolha...</option>
+
+                              <option value="dia">Manha</option>
+                              <option value="tarde">Tarde</option>
+                              <option value="noite">Noite</option>
+                            </select>
+                             </div>
+                            <div class="input-group-prepend">
+                                <label name ="dia" class="input-group-text" for="inputGroupSelect2">Dia da semana</label>
+                            </div>
+                                  <div class="form-group">
+                            <select class="custom-select" id="inputGroupSelect2">
+                              <option selected>Escolha...</option>
+
+                              <option value="1">Domingo</option>
+                              <option value="2">Segunda</option>
+                              <option value="3">Terça</option>
+                              <option value="4">Quarta</option>
+                              <option value="5">Quinta</option>
+                              <option value="6">Sexta</option>
+                              <option value="7">Sábado</option>
+
+
+                            </select>
+                                  </div>
+                             <button class="btn btn-primary" style="margin=10px;" id="submit" onclick="submit_message();">Pesquisar</button>
+                        </div>
+
+
+
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header card-header-danger">
+                                    <h4 class="card-title">O resultado é </h4>
+                                  
+								</div>
+                                <div class="card-body">
+									
+                                   Resultado : <span id="result"></span> <br/>
+                                    Resultado com  base no turno, no bairro e na quantidade de ocorrencais armazenados em nosso banco de dados
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card card-chart">
+                            <div class="card-header card-header-success">
+                                
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">Turno mais perigoso</h4>
+                                <h3>Turno : {{maximoTurno}}</h3>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-chart">
+                            <div class="card-header card-header-warning">
+                               
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">Bairro mais perigoso</h4>
+                                <h3>Bairro : {{maximoBairro}}</h3>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-chart">
+                            <div class="card-header card-header-danger">
+                              
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">Dia mais perigoso</h4>
+                                <h3> Dia : {{maxSemana}} </h3>
+                            </div>
+                         
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+
+                        <div class="card card-chart " style="width=50%" >
+                            <div class="card-header-success " >
+                             <div class="ct-chart" id="dailySalesChart"></div>
+                            </div>
+                            <div class="card-body" >
+                                <h4 class="card-title">Grafico Referente aos Dias pela quantidade de ocorrencias</h4>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="card card-chart" >
+                            <div class="card-header card-header-warning " >
+                              <div class="ct-chart ct-golden-section" id="chart1"></div>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">Grafico referente aos bairros pela quantidade de ocorrencias</h4>
+
+                            </div>
+                        </div>
+
+                           <div class="card card-chart" >
+                            <div class="card-header card-header-warning " >
+                              <div class="ct-chart ct-golden-section" id="chart11"></div>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">Grafico referente aos bairros com a menor quantidade de ocorrencias</h4>
+
+                            </div>
+                        </div>
+
+
+                        <div class="card card-chart">
+                            <div class="card-header card-header-danger" >
+                               <div class="ct-chart ct-golden-section" id="chart2" ></div>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title">Grafico referente aos turnos pela quantidade de ocorrencias</h4>
+
+                            </div>
+
+                        </div>
+                        <div>
+                        </div class="card-header ">
+                          </div>
+
+
+                </div>
+                
+                <h6> *Com base nos dados da PM-MG referente a furtos e roubos. </h6>
+
+            </div>
+
+        </div>
+
+    </div>
+
+  </div>
+
+ <div class="ct-chart" id="chart"></div>
+<script>
+
+    function submit_message() {
+
+    var bairro = document.getElementById("inputGroupSelect");
+    var turno = document.getElementById("inputGroupSelect1");
+    var dia = document.getElementById("inputGroupSelect2");
+
+    var entry = {
+      valor1: bairro.value,
+      valor2: turno.value,
+      valor3: dia.value
+    };
+
+    fetch(`${window.origin}/create-entry`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(entry),
+      cache: "no-cache",
+      headers: new Headers({
+        "content-type": "application/json"
+      })
+    })
+      .then(function (response) {
+        if (response.status !== 200) {
+        
+         
+         
+        }
+        response.json().then(function (data) {
+          console.log(data);
+          var teste = JSON.stringify(data);
+          console.log(teste);
+           document.getElementById("result").innerHTML = teste;
+          
+        });
+      })
+      .catch(function (error) {
+        console.log("Fetch error: " + error);
+      });
+
+  }
+
+</script>
+        <script type="text/javascript" src="https://rawgit.com/gionkunz/chartist-js/master/dist/chartist.js"></script>
+        
+        <script>
+        
+       var data = {
+  // A labels array that can contain any sort of values
+  labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex','Sab','Dom'],
+  // Our series array that contains series objects or in this case series data arrays
+  series: [
+    [238,264,248,248,258,262,251]
+  ]
+};
+new Chartist.Line('#chart1', {
+    labels: ['Goiania','Cachoeirinha','São Gabriel','Santa Cruz','Ribeiro de Abreu'],
+    series: [[110, 109, 102,99,90]]
+  });
+  new Chartist.Line('#chart11', {
+    labels: ['Vila da Paz','Conjunto Capitão Eduardo','Vila de sa','Antonio Ribeiro de Abreu','Da Graça'],
+    series: [[4, 2, 2,1,1]]
+  });
+
+
+  // Initialize a Line chart in the container with the ID chart2
+  new Chartist.Bar('#chart2', {
+    labels: ['manha', 'tarde', 'noite'],
+    series: [[518, 549, 703]]
+  });
+// As options we currently only set a static size of 300x200 px. We can also omit this and use aspect ratio containers
+// as you saw in the previous example
+var options = {
+  width: 300,
+  height: 200
+};
+
+// Create a new line chart object where as first parameter we pass in a selector
+// that is resolving to our chart container element. The Second parameter
+// is the actual data object. As a third parameter we pass in our custom options.
+new Chartist.Line('.ct-chart', data, options);
+        </script>
+
+</body>
+
+</html>
