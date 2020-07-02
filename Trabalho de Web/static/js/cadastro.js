@@ -30,8 +30,9 @@ function Cadastrar() {
 
                 var url = window.location.href;
                 var n = url.search("/cadastro");
-                var res = url.slice(0, n)
-                window.location.href = res
+                var res = url.slice(0, n);
+                console.log(res)
+                window.location.href = res;
 
             });
         })

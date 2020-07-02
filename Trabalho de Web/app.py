@@ -39,7 +39,7 @@ emailSecundario = ''
 def LoginServico():
 
     req = request.get_json()
- 
+
     
    
     
@@ -65,9 +65,13 @@ def cadastrar():
     req = request.get_json()
     res = make_response(jsonify({"message": "OK"}), 200)
 
+    global  loginSecundario 
+    global  senhaSecundario 
+    global  emailSecundario 
     loginSecundario = req['usuario']
     senhaSecundario = req['senha']
     emailSecundario = req['email']
+    
 
     print(loginSecundario,senhaSecundario,emailSecundario)
     return res
@@ -76,7 +80,13 @@ def cadastrar():
 
 @app.route("/EditarDados", methods=["POST"])
 def MudarDados():
-  
+    
+    global  loginSecundario 
+    global  senhaSecundario 
+    global  emailSecundario 
+    global  loginPrincipal
+    global  senhaPrincipal
+    global  emailPrincipal
     req = request.get_json()
     if perfil == 1:
         loginSecundario = req['usuario']
