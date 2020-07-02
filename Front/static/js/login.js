@@ -1,22 +1,15 @@
 function Login() {
 
-    let login = document.getElementById("inputEmail").innerHTML()
-    let senha = document.getElementById("inputPassword").innerHTML()
-        // if (login == "teste" && senha == "senha") {
-        //     window.location.href = "Home.html"
-        // } else {
-        //     alert("Tente colocar teste e senha")
-        // }
-
-    var name = 'testes1'
-    var message = 'testesss'
+    let login = document.getElementById("inputLogin");
+    let senha = document.getElementById("inputPassword");
 
     var entry = {
-        login: login,
-        senha: senha
+        login: login.value,
+        senha: senha.value
     };
 
-    fetch(`/loginEntrada`, {
+
+    fetch(`/LoginServico`, {
             method: "POST",
             credentials: "include",
             body: JSON.stringify(entry),
@@ -31,12 +24,17 @@ function Login() {
                 return;
             }
             response.json().then(function(data) {
-                console.log(data);
+                var url = window.location.href;
+
+                window.location.href = url + 'home'
+
+
             });
         })
         .catch(function(error) {
             console.log("Fetch error: " + error);
         });
+
 
 
 }

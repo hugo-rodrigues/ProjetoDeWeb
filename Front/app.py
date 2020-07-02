@@ -19,7 +19,7 @@ loginSecundario = ''
 senhaSecundario = ''
 emailSecundario = ''
 
-perfil = ''
+perfil = 0
 
 r = requests.get('https://api.hgbrasil.com/finance')
   
@@ -34,21 +34,26 @@ euroVariacao = json_object['results']['currencies']['EUR']['variation']
 
 
 
-@app.route("/loginEntrada", methods=["POST"])
-def create_entry():
+@app.route("/LoginServico", methods=["POST"])
+def LoginServico():
 
     req = request.get_json()
-
-    if req.usuario == loginPrincipal & req.senha == senhaPrincipal:
+ 
+    
+   
+    
+    if req['login'] == loginPrincipal and req['senha'] == senhaPrincipal:
         perfil = 0
-        res = make_response(jsonify({"message": "OK"}), 200)
-    else:
-        
-        if req.usuario == loginSecundario & req.senha == senhaPrincipal:
+        res = make_response(jsonify(req), 200)
+    else:  
+        if req['login'] == loginSecundario and req['senha'] == senhaPrincipal:
             perfil = 1
-            res = make_response(jsonify({"message": "OK"}), 200)
+            res = make_response(jsonify(req), 200)
+         
         else:
-            res = make_response(jsonify({"message": "Erro no login"}), 300)
+            res = make_response(jsonify({"message": "erro"}), 300)
+            
+    
     return res
 
 
@@ -57,26 +62,28 @@ def create_entry():
 def cadastrar():
 
     req = request.get_json()
-
-    loginSecundario = req.usuario
-    senhaSecundario = req.senha
-    emailSecundario = req.email
     res = make_response(jsonify({"message": "OK"}), 200)
+    print(req)
+    # loginSecundario = req['usuario']
+    # senhaSecundario = req['senha']
+    # emailSecundario = req['email']
+    # res = make_response(jsonify({"message": "OK"}), 200)
+    # print(loginSecundario,senhaSecundario,emailSecundario)
     return res
 
 @app.route("/EditarDados", methods=["POST"])
-def cadastrar():
+def MudarDados():
 
     req = request.get_json()
     if perfil == 1:
-        loginSecundario = req.usuario
-        senhaSecundario = req.senha
-        emailSecundario = req.email
+        loginSecundario = req['usuario']
+        senhaSecundario = req['senha']
+        emailSecundario = req['email']
         res = make_response(jsonify({"message": "OK"}), 200) 
     else:
-        loginPrincipal = req.usuario
-        senhaPrincipal = req.senha
-        emailPrincipal = req.email
+        loginPrincipal = req['usuario']
+        senhaPrincipal = req['senha']
+        emailPrincipal = req['email']
         res = make_response(jsonify({"message": "OK"}), 200)
     
     return res
@@ -90,7 +97,8 @@ def EnviarDados():
     if perfil == 1:
         jsonResp = {'login': loginSecundario , 'senha':senhaSecundario,'email':emailSecundario}
     else:
-         jsonResp = {'login': loginPrincipal , 'senha':senhaSecundario,'email':emailSecundario}
+        jsonResp = {'login': loginPrincipal , 'senha':senhaPrincipal,'email':emailPrincipal}
+        print(jsonResp)
     return jsonify(jsonResp)
 
 @app.route('/paginaDolar', methods=['GET'])
@@ -104,7 +112,7 @@ def Pagina_Dolar():
     return jsonify(jsonResp)
 
 @app.route('/paginaEuro', methods=['GET'])
-def Pagina_Dolar():
+def Pagina_Euro():
     @after_this_request
     def add_header(response):
         response.headers.add('Access-Control-Allow-Origin', '*')
@@ -114,7 +122,7 @@ def Pagina_Dolar():
     return jsonify(jsonResp)
 
 # Index
-@app.route('/')
+@app.route('/home')
 def index():
     
     return render_template('Home.html',dolarCompra=dolarCompra,dolarVenda=dolarVenda,euroCompra =euroCompra, euroVenda=euroVenda )
@@ -125,10 +133,13 @@ def index():
 def Dolar():
     return render_template('Dolar.html')
 
+@app.route('/Euro')
 
+def Euro():
+    return render_template('Euro.html')
 
 @app.route('/login')
-
+@app.route('/')
 def Login():
     return render_template('Login.html')
 
@@ -149,9 +160,9 @@ def Sobre():
     return render_template('Sobre.html')
 
 @app.route('/perfil')
-
 def Perfil():
-    return render_template('Perfil.html')
+    
+    return render_template('Perfil.html',)
 
 if __name__ == '__main__':
 

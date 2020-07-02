@@ -4,22 +4,24 @@ function InicioPerfil() {
         .then(response => response.json())
         .then(json => {
 
-            // document.getElementById("mudancaDolar").innerHTML = JSON.stringify(json.dolarVariacao)
-            // document.getElementById("statusDolar").innerHTML = JSON.stringify(json.dolarCompra)
-            // if (json.dolarVariacao > 1) {
-            //     document.getElementById("recomendacaoDolar").innerHTML = 'Comprar'
-            // } else {
-            //     document.getElementById("recomendacaoDolar").innerHTML = 'Nao Comprar'
-            // }
+            document.getElementById("loginAtual").innerHTML = JSON.stringify(json.login)
+            document.getElementById("emailAtual").innerHTML = JSON.stringify(json.email)
+            document.getElementById("senhaAtual").innerHTML = JSON.stringify(json.senha)
+            console.log(json.login, json.email, json.senha)
+                // if (json.dolarVariacao > 1) {
+                //     document.getElementById("recomendacaoDolar").innerHTML = 'Comprar'
+                // } else {
+                //     document.getElementById("recomendacaoDolar").innerHTML = 'Nao Comprar'
+                // }
 
         })
 }
 
 function EditarPerfil() {
-    let email = document.getElementById("inputEmail").innerHTML()
-    let senha = document.getElementById("inputPassword").innerHTML()
+    let email = document.getElementById("email")
+    let senha = document.getElementById("senha")
 
-    let usuario = document.getElementById("inputUsuario").innerHTML()
+    let usuario = document.getElementById("login")
 
 
 

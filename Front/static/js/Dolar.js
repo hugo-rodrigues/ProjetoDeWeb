@@ -15,5 +15,9 @@ function InicioDolar() {
         })
 }
 
+function myFunction() {
 
+    var teste = document.getElementById("mudancaDolar").innerHTML
+    console.log(teste)
+}
 InicioDolar()
