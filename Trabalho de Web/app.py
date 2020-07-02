@@ -40,7 +40,7 @@ def LoginServico():
 
     req = request.get_json()
 
-    
+    global perfil
    
     
     if req['login'] == loginPrincipal and req['senha'] == senhaPrincipal:
