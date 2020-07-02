@@ -7,29 +7,31 @@ function InicioPerfil() {
             document.getElementById("loginAtual").innerHTML = JSON.stringify(json.login)
             document.getElementById("emailAtual").innerHTML = JSON.stringify(json.email)
             document.getElementById("senhaAtual").innerHTML = JSON.stringify(json.senha)
-            console.log(json.login, json.email, json.senha)
-                // if (json.dolarVariacao > 1) {
-                //     document.getElementById("recomendacaoDolar").innerHTML = 'Comprar'
-                // } else {
-                //     document.getElementById("recomendacaoDolar").innerHTML = 'Nao Comprar'
-                // }
+
+            // if (json.dolarVariacao > 1) {
+            //     document.getElementById("recomendacaoDolar").innerHTML = 'Comprar'
+            // } else {
+            //     document.getElementById("recomendacaoDolar").innerHTML = 'Nao Comprar'
+            // }
 
         })
 }
 
 function EditarPerfil() {
-    let email = document.getElementById("email")
-    let senha = document.getElementById("senha")
+    let email = document.getElementById("email");
+    let senha = document.getElementById("senha");
 
-    let usuario = document.getElementById("login")
+    let usuario = document.getElementById("login");
 
 
 
     var entry = {
-        email: email,
-        senha: senha,
-        usuario: usuario
+        email: email.value,
+        senha: senha.value,
+        usuario: usuario.value
     };
+    console.log(entry)
+
 
     fetch(`/EditarDados`, {
             method: "POST",
@@ -46,7 +48,9 @@ function EditarPerfil() {
                 return;
             }
             response.json().then(function(data) {
-                console.log(data.message);
+
+                console.log(data)
+
             });
         })
         .catch(function(error) {
@@ -54,6 +58,8 @@ function EditarPerfil() {
         });
 
 
-
 }
+
+
+
 InicioPerfil()

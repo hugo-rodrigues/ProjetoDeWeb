@@ -11,13 +11,7 @@ app = Flask(__name__)
 #t3= ts.turno3
 
 # rotulosTurno = [ 'Manha', 'Tarde','Noite']
-loginPrincipal = 'login'
-senhaPrincipal = 'senha'
-emailPrincipal = 'email@email.com'
 
-loginSecundario = ''
-senhaSecundario = ''
-emailSecundario = ''
 
 perfil = 0
 
@@ -32,6 +26,13 @@ euroCompra = json_object['results']['currencies']['EUR']['buy']
 euroVenda = json_object['results']['currencies']['EUR']['sell']
 euroVariacao = json_object['results']['currencies']['EUR']['variation']
 
+loginPrincipal = 'login'
+senhaPrincipal = 'senha'
+emailPrincipal = 'email@email.com'
+
+loginSecundario = ''
+senhaSecundario = ''
+emailSecundario = ''
 
 
 @app.route("/LoginServico", methods=["POST"])
@@ -63,17 +64,19 @@ def cadastrar():
 
     req = request.get_json()
     res = make_response(jsonify({"message": "OK"}), 200)
-    print(req)
-    # loginSecundario = req['usuario']
-    # senhaSecundario = req['senha']
-    # emailSecundario = req['email']
-    # res = make_response(jsonify({"message": "OK"}), 200)
-    # print(loginSecundario,senhaSecundario,emailSecundario)
+
+    loginSecundario = req['usuario']
+    senhaSecundario = req['senha']
+    emailSecundario = req['email']
+
+    print(loginSecundario,senhaSecundario,emailSecundario)
     return res
+
+
 
 @app.route("/EditarDados", methods=["POST"])
 def MudarDados():
-
+  
     req = request.get_json()
     if perfil == 1:
         loginSecundario = req['usuario']
@@ -84,6 +87,7 @@ def MudarDados():
         loginPrincipal = req['usuario']
         senhaPrincipal = req['senha']
         emailPrincipal = req['email']
+        print(emailPrincipal,senhaPrincipal,loginPrincipal,req['email'])
         res = make_response(jsonify({"message": "OK"}), 200)
     
     return res
@@ -98,7 +102,7 @@ def EnviarDados():
         jsonResp = {'login': loginSecundario , 'senha':senhaSecundario,'email':emailSecundario}
     else:
         jsonResp = {'login': loginPrincipal , 'senha':senhaPrincipal,'email':emailPrincipal}
-        print(jsonResp)
+      
     return jsonify(jsonResp)
 
 @app.route('/paginaDolar', methods=['GET'])
@@ -144,7 +148,7 @@ def Login():
     return render_template('Login.html')
 
 @app.route('/cadastro')
-
+@app.route('/cadastro?')
 def Cadastro():
     return render_template('Cadastro.html')
 
@@ -160,6 +164,7 @@ def Sobre():
     return render_template('Sobre.html')
 
 @app.route('/perfil')
+@app.route('/perfil?')
 def Perfil():
     
     return render_template('Perfil.html',)

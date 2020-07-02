@@ -11,7 +11,7 @@ function Cadastrar() {
         senha: senha.value,
         usuario: usuario.value
     };
-    console.log(entry, '---------------------------');
+    console.log(entry)
     fetch(`/cadastrar`, {
             method: "POST",
             credentials: "include",
@@ -27,11 +27,12 @@ function Cadastrar() {
                 return;
             }
             response.json().then(function(data) {
-                // var url = window.location.href;
-                // var n = str.search("/cadastro");
-                // var res = str.slice(0, n);
-                console.log(data, res)
-                    // window.location.href = res;
+
+                var url = window.location.href;
+                var n = url.search("/cadastro");
+                var res = url.slice(0, n)
+                window.location.href = res
+
             });
         })
         .catch(function(error) {
